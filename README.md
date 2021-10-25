@@ -5,3 +5,4 @@ Paula Miranda, Veterinaria, Chilena.
 ## Resumen de datos originales
 
 ## Resumen de metodos estadisticos a utilizar
+ANOVA de una via
