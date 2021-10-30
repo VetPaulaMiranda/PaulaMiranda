@@ -1,0 +1,76 @@
+---
+title: "Analisis exploratorio de Datos"
+author: "Paula Miranda"
+date: date: "`r format(Sys.time(), '%d %B %Y')`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyr)
+library(readxl)
+library(car)
+library(lmtest)
+library(dplyr)
+library(knitr)
+library(ggplot2)
+
+```
+
+```{r}
+EDA <- read_excel("Dosis.xlsx", sheet = 1)
+head(EDA)
+EDA_Dosis<- tidyr::gather(EDA,"Estadio", "Caligus",8:13)
+EDA_Dosis$ESTANQUE <- as.factor(EDA_Dosis$ESTANQUE)
+EDA_Dosis$TRATAMIENTO<- as.factor(EDA_Dosis$TRATAMIENTO)
+EDA_Dosis$PEZ<- as.factor(EDA_Dosis$PEZ)
+EDA_Dosis$Estadio<- as.factor(EDA_Dosis$Estadio)
+EDA_Dosis$`Días de Alimentación`<- as.factor(EDA_Dosis$`Días de Alimentación`)
+EDA_Dosis$`Días Post Infestación`<- as.factor(EDA_Dosis$`Días Post Infestación`)
+head(EDA_Dosis)
+
+```
+
+```{r, echo=FALSE}
+#Tabla resumen de Datos
+summary(EDA_Dosis)
+#Tabla 2. Resumen de Datos Número de parásitos por estadío para cada pez dentro de estanque dentro de tratamiento por días de alimentación y días pot infestación
+
+```
+
+```{r, echo=FALSE}
+#Histograma de datos
+EDA_Dosis %>%
+  ggplot(aes(x=Caligus, color=TRATAMIENTO)) +
+  geom_histogram(fill="white", position="dodge",bins = 10)+
+  theme(legend.position="right")
+
+```
+
+```{r}
+#Gráfico de Bigotes, caligus por estadío para días post infestación por tratamiento
+EDA_Dosis %>%
+  ggplot(aes(x=TRATAMIENTO, y=Caligus, fill=factor(`Días Post Infestación`))) +
+  geom_boxplot()+
+  facet_wrap(~Estadio,scales = "free")
+
+```
+```{r}
+EDA_Dosis %>% group_by(id) %>% mutate(csum = cumsum(Caligus))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
